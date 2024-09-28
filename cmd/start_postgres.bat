@@ -1,1 +1,0 @@
-docker run --name temp_postgres -e POSTGRES_DB=postgres -e POSTGRES_USER=user -e POSTGRES_PASSWORD=pass -p 5432:5432 -d postgres:15-alpine

@@ -1,0 +1,21 @@
+version : '3'
+
+services:
+    backend:
+      image: todo_server
+      ports:
+        - "8080:8080"
+      environment:
+        POSTGRES_DB_HOST: "dart_todo_app-db-1"
+        POSTGRES_DB_PORT: "5432"
+      depends_on:
+        db:
+          condition: service_started
+    db:
+      image: postgres:15-alpine
+      ports:
+        - "5432:5432"
+      environment:
+        POSTGRES_DB: "postgres"
+        POSTGRES_USER: "user"
+        POSTGRES_PASSWORD: "pass"

@@ -1,0 +1,13 @@
+.dockerignore
+build/
+.git/
+.github/
+.gitignore
+.idea/
+.packages
+
+cmd/
+
+*/.dart_tool/
+*/.gitignore
+todo_server/Dockerfile

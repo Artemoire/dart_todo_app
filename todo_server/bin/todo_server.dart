@@ -14,13 +14,14 @@ final _router = Router()
   ..post('/', createTodo);
 
 void main(List<String> args) async {
+  
   await postgresDatabase.open(
       Endpoint(
-        host: 'localhost',
+        host: Platform.environment['POSTGRES_DB_HOST']!,
         database: 'postgres',
         username: 'user',
-        password: 'pass',
-        port: 5432,
+        password: 'pass',        
+        port: int.parse(Platform.environment['POSTGRES_DB_PORT']!),
       ),
       settings: ConnectionSettings(sslMode: SslMode.disable));
 
