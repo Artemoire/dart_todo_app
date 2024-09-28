@@ -3,8 +3,10 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:todo/todo.dart';
 
+const _host = 'localhost';
+
 Future<List<TodoItem>> fetchTodos() async {
-  final response = await http.get(Uri.parse('http://localhost:8080/'));
+  final response = await http.get(Uri.parse('http://$_host:8080/'));
   if (response.statusCode == 200) {
     return (jsonDecode(response.body) as List<dynamic>)
         .map((jsonItem) => TodoItem.fromJson(jsonItem))
@@ -16,7 +18,7 @@ Future<List<TodoItem>> fetchTodos() async {
 
 Future<TodoItem> postTodo(String title) async {
   final response =
-      await http.post(Uri.parse('http://localhost:8080/'), body: title);
+      await http.post(Uri.parse('http://$_host:8080/'), body: title);
 
   if (response.statusCode == 200) {
     return TodoItem.fromJson(jsonDecode(response.body));
@@ -26,7 +28,7 @@ Future<TodoItem> postTodo(String title) async {
 }
 
 Future<void> completeTodo(TodoItem item) async {
-  final response = await http.post(Uri.parse('http://localhost:8080/${item.id}/status'));
+  final response = await http.post(Uri.parse('http://$_host:8080/${item.id}/status'));
   
   if (response.statusCode != 200) {
     throw Exception('Failed to complete todo');
@@ -34,7 +36,7 @@ Future<void> completeTodo(TodoItem item) async {
 }
 
 Future<void> undoTodo(TodoItem item) async {
-  final response = await http.delete(Uri.parse('http://localhost:8080/${item.id}/status'));
+  final response = await http.delete(Uri.parse('http://$_host:8080/${item.id}/status'));
 
   if (response.statusCode != 200) {
     throw Exception('Failed to undo todo');
@@ -42,7 +44,7 @@ Future<void> undoTodo(TodoItem item) async {
 }
 
 Future<void> deleteTodo(TodoItem item) async {
-  final response = await http.delete(Uri.parse('http://localhost:8080/${item.id}'));
+  final response = await http.delete(Uri.parse('http://$_host:8080/${item.id}'));
 
   if (response.statusCode != 200) {
     throw Exception('Failed to delete todo');
