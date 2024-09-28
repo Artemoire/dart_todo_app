@@ -25,6 +25,20 @@ class _HomePageState extends State<HomePage> {
     });
   }
 
+  void _setDone(TodoItem todo, bool? done) async {
+    if (done == null) return;
+    if (done) {
+      await completeTodo(todo);
+    } else {
+      await undoTodo(todo);
+    }
+    final todoItems = await futureTodoItems;
+    var idx = todoItems.indexOf(todo);
+     setState(() {
+    todoItems.replaceRange(idx, idx+1, [TodoItem(id: todo.id, title: todo.title, done: done)]);
+     });
+  }
+
   @override
   void initState() {
     super.initState();
@@ -47,7 +61,12 @@ class _HomePageState extends State<HomePage> {
                 future: futureTodoItems,
                 builder: (context, snapshot) {
                   if (snapshot.hasData) {
-                    return Expanded(child: TodoList(items: snapshot.data!));
+                    return Expanded(
+                      child: TodoList(
+                        items: snapshot.data!,
+                        onChanged: _setDone,
+                      ),
+                    );
                   } else if (snapshot.hasError) {
                     return Text('${snapshot.error}');
                   }
@@ -57,7 +76,7 @@ class _HomePageState extends State<HomePage> {
                 }),
           ],
         ),
-      ),      
+      ),
     );
   }
 }

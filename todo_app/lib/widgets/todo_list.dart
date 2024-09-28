@@ -2,9 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:todo/todo.dart';
 
 class TodoList extends StatelessWidget {
-  const TodoList({super.key, required this.items});
+  const TodoList({super.key, required this.items, required this.onChanged});
 
   final List<TodoItem> items;
+  final Function(TodoItem, bool?) onChanged;
 
   @override
   Widget build(BuildContext context) {
@@ -14,7 +15,7 @@ class TodoList extends StatelessWidget {
       itemBuilder: (context, index) {
         return TodoListItem(
           item: items[index],
-          onChanged: (value) {}, // TODO: done
+          onChanged: (value) => onChanged(items[index], value),
         );
       },
     );
@@ -28,10 +29,10 @@ class TodoListItem extends StatelessWidget {
   final Function(bool?) onChanged;
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context) {    
     return ListTile(
       title: Text(item.title),
-      leading: Checkbox(value: false, onChanged: onChanged),
+      leading: Checkbox(value: item.done, onChanged: onChanged),
     );
   }
 }

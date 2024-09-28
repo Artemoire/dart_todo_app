@@ -14,7 +14,7 @@ class AddTodo extends StatelessWidget {
         Expanded(
           child: TextField(
             controller: _todoController,
-            decoration: const InputDecoration(labelText: 'Task'),
+            decoration: const InputDecoration(labelText: 'TODO'),
           ),
         ),
         IconButton(

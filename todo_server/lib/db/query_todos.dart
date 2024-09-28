@@ -15,11 +15,12 @@ class QueryTodos implements RawSelectModel<List<TodoItem>> {
       return TodoItem(
         id: row[0] as int,
         title: row[1] as String,
+        done: row[2] as bool,
       );
     }).toList();
   }
 
   @override
-  String toSQL() => "SELECT $_id, $_title FROM $_todos WHERE $_done = FALSE;";
+  String toSQL() => "SELECT $_id, $_title, $_done FROM $_todos;";
 
 }

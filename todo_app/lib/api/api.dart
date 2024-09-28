@@ -24,3 +24,19 @@ Future<TodoItem> postTodo(String title) async {
     throw Exception('Failed to save todo');
   }
 }
+
+Future<void> completeTodo(TodoItem item) async {
+  final response = await http.post(Uri.parse('http://localhost:8080/${item.id}/status'));
+  
+  if (response.statusCode != 200) {
+    throw Exception('Failed to complete todo');
+  }
+}
+
+Future<void> undoTodo(TodoItem item) async {
+  final response = await http.delete(Uri.parse('http://localhost:8080/${item.id}/status'));
+
+  if (response.statusCode != 200) {
+    throw Exception('Failed to undo todo');
+  }
+}

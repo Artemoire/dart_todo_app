@@ -16,6 +16,6 @@ class AddTodo implements RawSelectModel<TodoItem> {
   String toSQL() => "INSERT INTO $_todos ($_title) VALUES ('$title') RETURNING $_id;";
   
   @override
-  TodoItem marshal(List<List<Object?>> rows) => TodoItem(id: rows[0][0] as int, title: title);
+  TodoItem marshal(List<List<Object?>> rows) => TodoItem(id: rows[0][0] as int, title: title, done: false);
   
 }
