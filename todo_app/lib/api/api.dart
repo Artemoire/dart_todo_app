@@ -40,3 +40,11 @@ Future<void> undoTodo(TodoItem item) async {
     throw Exception('Failed to undo todo');
   }
 }
+
+Future<void> deleteTodo(TodoItem item) async {
+  final response = await http.delete(Uri.parse('http://localhost:8080/${item.id}'));
+
+  if (response.statusCode != 200) {
+    throw Exception('Failed to delete todo');
+  }
+}

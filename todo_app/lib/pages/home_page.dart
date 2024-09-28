@@ -34,9 +34,18 @@ class _HomePageState extends State<HomePage> {
     }
     final todoItems = await futureTodoItems;
     var idx = todoItems.indexOf(todo);
-     setState(() {
-    todoItems.replaceRange(idx, idx+1, [TodoItem(id: todo.id, title: todo.title, done: done)]);
-     });
+    setState(() {
+      todoItems.replaceRange(
+          idx, idx + 1, [TodoItem(id: todo.id, title: todo.title, done: done)]);
+    });
+  }
+
+  void _delete(TodoItem todo) async {
+    await deleteTodo(todo);
+    final todoItems = await futureTodoItems;
+    setState(() {
+      todoItems.remove(todo);
+    });
   }
 
   @override
@@ -65,6 +74,7 @@ class _HomePageState extends State<HomePage> {
                       child: TodoList(
                         items: snapshot.data!,
                         onChanged: _setDone,
+                        onDelete: _delete,
                       ),
                     );
                   } else if (snapshot.hasError) {

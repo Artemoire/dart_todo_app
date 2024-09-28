@@ -7,6 +7,7 @@ import 'package:shelf_router/shelf_router.dart';
 import 'package:todo_server/database.dart';
 import 'package:todo_server/db/todo_table.dart';
 import 'package:todo_server/handlers/create_todo.dart';
+import 'package:todo_server/handlers/delete_todo.dart';
 import 'package:todo_server/handlers/list_todos.dart';
 import 'package:todo_server/handlers/set_todo_status.dart';
 
@@ -14,6 +15,7 @@ final _router = Router()
   ..get('/', listTodos)
   ..post('/<id>/status', completeTodo)
   ..delete('/<id>/status', undoTodo)
+  ..delete('/<id>', deleteTodo)
   ..post('/', createTodo);
 
 void main(List<String> args) async {
