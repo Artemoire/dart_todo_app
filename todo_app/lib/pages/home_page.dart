@@ -17,7 +17,7 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   late Future<List<TodoItem>> futureTodoItems;
-  StreamController<String> newTodos = StreamController();
+  StreamController<TodoItem> newTodos = StreamController();
   
   @override
   void initState() {

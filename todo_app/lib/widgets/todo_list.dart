@@ -6,7 +6,7 @@ class TodoList extends StatefulWidget {
   const TodoList({super.key, required this.items, required this.newTodos});
 
   final List<TodoItem> items;
-  final Stream<String> newTodos;
+  final Stream<TodoItem> newTodos;
 
   @override
   State<TodoList> createState() => _TodoListState();
@@ -33,10 +33,9 @@ class _TodoListState extends State<TodoList> {
     widget.newTodos.listen(_addTodo);
   }
 
-  _addTodo(String title) async {
-    final todo = await postTodo(title);
+  _addTodo(TodoItem item) async {
     setState(() {
-      widget.items.add(todo);
+      widget.items.add(item);
     });
   }
 
