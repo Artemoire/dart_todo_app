@@ -1,11 +1,12 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 
 class AddTodo extends StatelessWidget {
   final TextEditingController _todoController = TextEditingController();
+  final StreamController<String> newTodos;
 
-  AddTodo({super.key, required this.addTodo});
-
-  final Function(String) addTodo;
+  AddTodo({super.key, required this.newTodos});
 
   @override
   Widget build(BuildContext context) {
@@ -18,7 +19,7 @@ class AddTodo extends StatelessWidget {
           ),
         ),
         IconButton(
-          onPressed: () => addTodo(_todoController.text),
+          onPressed: () => newTodos.add(_todoController.text),
           icon: const Icon(Icons.add),
         ),
       ],

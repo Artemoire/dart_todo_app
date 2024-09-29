@@ -1,29 +1,66 @@
 import 'package:flutter/material.dart';
 import 'package:todo/todo.dart';
+import 'package:todo_app/api/api.dart';
 
-class TodoList extends StatelessWidget {
-  const TodoList(
-      {super.key,
-      required this.items,
-      required this.onChanged,
-      required this.onDelete});
+class TodoList extends StatefulWidget {
+  const TodoList({super.key, required this.items, required this.newTodos});
 
   final List<TodoItem> items;
-  final Function(TodoItem, bool?) onChanged;
-  final Function(TodoItem) onDelete;
+  final Stream<String> newTodos;
 
+  @override
+  State<TodoList> createState() => _TodoListState();
+}
+
+class _TodoListState extends State<TodoList> {
   @override
   Widget build(BuildContext context) {
     return ListView.builder(
-      itemCount: items.length,
+      itemCount: widget.items.length,
       itemBuilder: (context, index) {
         return TodoListItem(
-          item: items[index],
-          onChanged: (value) => onChanged(items[index], value),
-          onDelete: () => onDelete(items[index]),
+          item: widget.items[index],
+          onChanged: (value) => _changeTodoStatus(index, value),
+          onDelete: () => _deleteTodo(index),
         );
       },
     );
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    widget.newTodos.listen(_addTodo);
+  }
+
+  _addTodo(String title) async {
+    final todo = await postTodo(title);
+    setState(() {
+      widget.items.add(todo);
+    });
+  }
+
+  _changeTodoStatus(int index, bool? value) async {
+    if (value == null) return;
+    var item = widget.items[index];
+    if (value) {
+      await completeTodo(item);
+    } else {
+      await undoTodo(item);
+    }
+
+    setState(() {
+      widget.items.replaceRange(index, index + 1,
+          [TodoItem(id: item.id, title: item.title, done: value)]);
+    });
+  }
+
+  _deleteTodo(int index) async {
+    var item = widget.items[index];
+    await deleteTodo(item);
+    setState(() {
+      widget.items.removeAt(index);
+    });
   }
 }
 

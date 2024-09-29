@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:todo/todo.dart';
 import 'package:todo_app/api/api.dart';
@@ -15,39 +17,8 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   late Future<List<TodoItem>> futureTodoItems;
-
-  void _addTodo(String title) async {
-    if (title.isEmpty) return;
-    final todo = await postTodo(title);
-    final todoItems = await futureTodoItems; // TODO: state management ?
-    setState(() {
-      todoItems.add(todo);
-    });
-  }
-
-  void _setDone(TodoItem todo, bool? done) async {
-    if (done == null) return;
-    if (done) {
-      await completeTodo(todo);
-    } else {
-      await undoTodo(todo);
-    }
-    final todoItems = await futureTodoItems;
-    var idx = todoItems.indexOf(todo);
-    setState(() {
-      todoItems.replaceRange(
-          idx, idx + 1, [TodoItem(id: todo.id, title: todo.title, done: done)]);
-    });
-  }
-
-  void _delete(TodoItem todo) async {
-    await deleteTodo(todo);
-    final todoItems = await futureTodoItems;
-    setState(() {
-      todoItems.remove(todo);
-    });
-  }
-
+  StreamController<String> newTodos = StreamController();
+  
   @override
   void initState() {
     super.initState();
@@ -65,7 +36,7 @@ class _HomePageState extends State<HomePage> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.start,
           children: <Widget>[
-            AddTodo(addTodo: _addTodo),
+            AddTodo(newTodos: newTodos),
             FutureBuilder(
                 future: futureTodoItems,
                 builder: (context, snapshot) {
@@ -73,8 +44,7 @@ class _HomePageState extends State<HomePage> {
                     return Expanded(
                       child: TodoList(
                         items: snapshot.data!,
-                        onChanged: _setDone,
-                        onDelete: _delete,
+                        newTodos: newTodos.stream,
                       ),
                     );
                   } else if (snapshot.hasError) {
