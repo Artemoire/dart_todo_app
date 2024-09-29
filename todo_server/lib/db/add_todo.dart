@@ -7,7 +7,7 @@ const _id = TodoTable.idColumn;
 const _title = TodoTable.titleColumn;
 
 // TODO: returning
-class AddTodo implements RawSelectModel<TodoItem> {
+class AddTodo implements RawStatement<TodoItem> {
   final String title;
 
   AddTodo(this.title);

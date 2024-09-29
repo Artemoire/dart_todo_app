@@ -7,7 +7,7 @@ const _title = TodoTable.titleColumn;
 const _id = TodoTable.idColumn;
 const _done = TodoTable.doneColumn;
 
-class QueryTodos implements RawSelectModel<List<TodoItem>> {
+class QueryTodos implements RawStatement<List<TodoItem>> {
 
   @override
   List<TodoItem> marshal(List<List<Object?>> rows) {

@@ -4,7 +4,7 @@ import 'package:todo_server/db/todo_table.dart';
 const _todos = TodoTable.name;
 const _id = TodoTable.idColumn;
 
-class DeleteTodo implements RawInsertModel {
+class DeleteTodo implements RawExecute {
   final int id;
   DeleteTodo({required this.id});
 

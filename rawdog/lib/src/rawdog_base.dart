@@ -1,21 +1,9 @@
 import 'package:rawdog/src/rawdog_models.dart';
 
-class Db {
-  final DbDriver driver;
+abstract class Database {
 
-  Db(this.driver);
+  Future<void> execSql(String sql); // TODO: ResultSet
+  Future<void> rawExec(RawExecute raw);
+  Future<R> rawStmt<R>(RawStatement<R> raw);
 
-  Future<void> insert(RawInsertModel model) async {
-    var sql = model.toSQL();
-    await driver.execute(sql);
-  }
-
-  Future<R> query<R>(RawSelectModel<R> model) async {
-    var rows = await driver.execute(model.toSQL());
-    return model.marshal(rows);
-  }
-}
-
-abstract class DbDriver {
-  Future<List<List<Object?>>> execute(String sql);
 }

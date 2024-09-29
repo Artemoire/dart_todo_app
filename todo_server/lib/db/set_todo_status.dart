@@ -5,7 +5,7 @@ const _todos = TodoTable.name;
 const _id = TodoTable.idColumn;
 const _done = TodoTable.doneColumn;
 
-class SetTodoStatus implements RawInsertModel {
+class SetTodoStatus implements RawExecute {
   final int id;
   final String done;
 

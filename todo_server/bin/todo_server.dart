@@ -20,7 +20,7 @@ final _router = Router()
 
 void main(List<String> args) async {
   
-  await postgresDatabase.open(
+  await database.open(
       Endpoint(
         host: Platform.environment['POSTGRES_DB_HOST']!,
         database: 'postgres',
@@ -30,8 +30,8 @@ void main(List<String> args) async {
       ),
       settings: ConnectionSettings(sslMode: SslMode.disable));
 
-  await postgresDatabase
-      .execute('''CREATE TABLE IF NOT EXISTS ${TodoTable.name} (
+  await database
+      .execSql('''CREATE TABLE IF NOT EXISTS ${TodoTable.name} (
   ${TodoTable.idColumn} SERIAL PRIMARY KEY,
   ${TodoTable.titleColumn} VARCHAR(255) NOT NULL,
   ${TodoTable.doneColumn} BOOLEAN DEFAULT FALSE NOT NULL
